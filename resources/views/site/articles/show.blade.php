@@ -1,4 +1,20 @@
 <x-site-layout :title="$article->seo_title ?? $article->title" :description="$article->seo_description ?? $article->excerpt">
+    @push('head')
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'NewsArticle',
+                'headline' => $article->title,
+                'description' => $article->excerpt,
+                'datePublished' => $article->published_at?->toIso8601String(),
+                'dateModified' => $article->updated_at->toIso8601String(),
+                'author' => ['@type' => 'Organization', 'name' => 'CEIMO'],
+                'publisher' => ['@type' => 'Organization', 'name' => 'CEIMO'],
+                'mainEntityOfPage' => url()->current(),
+            ]) !!}
+        </script>
+    @endpush
+
     <article class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
         <p class="text-xs font-semibold text-accent-600">{{ $article->category }}</p>
         <h1 class="section-title mt-2">{{ $article->title }}</h1>

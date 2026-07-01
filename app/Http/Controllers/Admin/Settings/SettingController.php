@@ -21,6 +21,7 @@ class SettingController extends Controller
         'seo.default_title',
         'seo.default_description',
         'seo.google_analytics_id',
+        'seo.google_site_verification',
     ];
 
     public function edit(): View

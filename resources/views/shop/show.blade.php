@@ -1,4 +1,22 @@
 <x-site-layout :title="$product->name" :description="$product->description">
+    @push('head')
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'Product',
+                'name' => $product->name,
+                'description' => $product->description,
+                'offers' => [
+                    '@type' => 'Offer',
+                    'priceCurrency' => 'XAF',
+                    'price' => (float) $product->price,
+                    'availability' => $product->isInStock() ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+                    'url' => url()->current(),
+                ],
+            ]) !!}
+        </script>
+    @endpush
+
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16">
         <p class="text-xs font-semibold text-accent-600 uppercase">{{ $product->type }}</p>
         <h1 class="section-title mt-2">{{ $product->name }}</h1>

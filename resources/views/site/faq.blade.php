@@ -1,4 +1,18 @@
 <x-site-layout title="FAQ">
+    @push('head')
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'FAQPage',
+                'mainEntity' => $faqs->flatten()->map(fn ($faq) => [
+                    '@type' => 'Question',
+                    'name' => $faq->question,
+                    'acceptedAnswer' => ['@type' => 'Answer', 'text' => $faq->answer],
+                ])->values()->all(),
+            ]) !!}
+        </script>
+    @endpush
+
     <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16" x-data="{ open: null }">
         <span class="section-eyebrow">Aide</span>
         <h1 class="section-title mt-1 mb-10">Questions fréquentes</h1>

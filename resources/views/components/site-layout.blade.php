@@ -14,8 +14,32 @@
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url()->current() }}">
 
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $title ?? config('app.name') }}">
+        <meta name="twitter:description" content="{{ $description ?? 'Plateforme officielle du CEIMO.' }}">
+
+        <link rel="canonical" href="{{ url()->current() }}">
+
+        @if ($googleSiteVerification = \App\Models\Cms\Setting::get('seo.google_site_verification'))
+            <meta name="google-site-verification" content="{{ $googleSiteVerification }}">
+        @endif
+
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
+
+        <link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+        <meta name="theme-color" content="#1d4ed8">
+
+        <script type="application/ld+json">
+            {!! json_encode([
+                '@context' => 'https://schema.org',
+                '@type' => 'Organization',
+                'name' => 'CEIMO',
+                'alternateName' => "Cercle des Enseignants d'Informatique du Moungo",
+                'url' => route('home'),
+                'sameAs' => [],
+            ]) !!}
+        </script>
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @stack('head')
@@ -151,5 +175,15 @@
         </footer>
 
         <livewire:ai.assistant-widget />
+
+        @if ($gaId = \App\Models\Cms\Setting::get('seo.google_analytics_id'))
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ $gaId }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{ $gaId }}');
+            </script>
+        @endif
     </body>
 </html>

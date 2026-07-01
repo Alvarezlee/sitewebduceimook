@@ -1,0 +1,17 @@
+{
+    "name": "CEIMO — Cercle des Enseignants d'Informatique du Moungo",
+    "short_name": "CEIMO",
+    "description": "Bibliothèque numérique, MOUNGO TIC QUIZZ, boutique et entreprises membres du CEIMO.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#1d4ed8",
+    "lang": "fr",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "48x48",
+            "type": "image/x-icon"
+        }
+    ]
+}
