@@ -21,7 +21,7 @@ class ContactController extends Controller
     {
         $adminEmail = Setting::get('contact.recipient_email', config('mail.from.address'));
 
-        Mail::to($adminEmail)->queue(new ContactMessageReceived($request->validated()));
+        Mail::to($adminEmail)->queue(new ContactMessageReceived($request->safe()->except('g-recaptcha-response')));
 
         return back()->with('success', 'Votre message a bien été envoyé. Nous vous répondrons dans les meilleurs délais.');
     }

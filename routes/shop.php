@@ -11,12 +11,18 @@ Route::get('/boutique/categorie/{category:slug}', [ShopController::class, 'categ
 Route::get('/boutique/produit/{product:slug}', [ShopController::class, 'show'])->name('shop.show');
 
 Route::get('/panier', [CartController::class, 'show'])->name('shop.cart');
-Route::post('/panier/ajouter/{product}', [CartController::class, 'add'])->name('shop.cart.add');
-Route::delete('/panier/retirer/{product}', [CartController::class, 'remove'])->name('shop.cart.remove');
+Route::post('/panier/ajouter/{product}', [CartController::class, 'add'])
+    ->middleware('throttle:30,1')
+    ->name('shop.cart.add');
+Route::delete('/panier/retirer/{product}', [CartController::class, 'remove'])
+    ->middleware('throttle:30,1')
+    ->name('shop.cart.remove');
 
 Route::middleware('auth')->group(function () {
     Route::get('/commande', [CheckoutController::class, 'create'])->name('shop.checkout');
-    Route::post('/commande', [CheckoutController::class, 'store'])->name('shop.checkout.store');
+    Route::post('/commande', [CheckoutController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('shop.checkout.store');
 
     Route::get('/mes-commandes', [OrderController::class, 'index'])->name('shop.orders.index');
     Route::get('/mes-commandes/{order}', [OrderController::class, 'show'])->name('shop.orders.show');

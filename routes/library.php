@@ -11,7 +11,9 @@ Route::get('/bibliotheque/document/{document:slug}', [LibraryController::class, 
 
 Route::middleware('auth')->group(function () {
     Route::get('/bibliotheque/abonnement', [SubscriptionController::class, 'create'])->name('library.subscribe');
-    Route::post('/bibliotheque/abonnement/{plan}', [SubscriptionController::class, 'store'])->name('library.subscribe.store');
+    Route::post('/bibliotheque/abonnement/{plan}', [SubscriptionController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('library.subscribe.store');
 
     Route::get('/bibliotheque/telecharger/{document}', DownloadController::class)
         ->middleware('signed')

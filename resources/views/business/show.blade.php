@@ -67,6 +67,8 @@
                 <textarea id="message" name="message" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 dark:bg-slate-900 dark:border-white/10"></textarea>
                 <x-input-error :messages="$errors->get('message')" class="mt-2" />
             </div>
+            <x-recaptcha />
+
             <button type="submit" class="btn-primary">Envoyer</button>
         </form>
     </div>

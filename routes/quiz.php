@@ -12,7 +12,9 @@ Route::get('/moungo-tic-quizz/classement/{edition}', LeaderboardController::clas
 
 Route::middleware('auth')->group(function () {
     Route::get('/moungo-tic-quizz/{edition}/inscription', [RegistrationController::class, 'create'])->name('quiz.register');
-    Route::post('/moungo-tic-quizz/{edition}/inscription', [RegistrationController::class, 'store'])->name('quiz.register.store');
+    Route::post('/moungo-tic-quizz/{edition}/inscription', [RegistrationController::class, 'store'])
+        ->middleware('throttle:10,1')
+        ->name('quiz.register.store');
 
     Route::get('/moungo-tic-quizz/{edition}/demarrer', [AttemptController::class, 'start'])->name('quiz.attempt.start');
     Route::get('/moungo-tic-quizz/{edition}/tentative', [AttemptController::class, 'show'])->name('quiz.attempt.show');

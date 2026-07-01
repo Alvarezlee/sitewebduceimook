@@ -36,6 +36,8 @@
                     <x-input-error :messages="$errors->get('message')" class="mt-2" />
                 </div>
 
+                <x-recaptcha />
+
                 <button type="submit" class="btn-primary">Envoyer le message</button>
             </form>
         </div>

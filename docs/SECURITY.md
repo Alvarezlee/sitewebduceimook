@@ -35,10 +35,16 @@ Référence pour l'implémentation (OWASP Top 10) — voir `docs/ARCHITECTURE.md
   les documents payants (bibliothèque), accès via route signée temporaire.
 
 ## 5. Rate limiting & anti-bot
-- `throttle` middleware sur : login, inscription, mot de passe oublié,
-  formulaire de contact, API publique, tentative de quiz.
-- CAPTCHA (Google reCAPTCHA v3) sur inscription, contact, formulaire
-  entreprise.
+- `throttle` middleware appliqué : connexion (5/min via `LoginForm`),
+  vérification d'email (6/min), formulaire de contact et contact entreprise
+  (5/min), webhook Monetbil (60/min), inscription bibliothèque/quiz/checkout
+  boutique (10/min), ajout/retrait panier (30/min).
+- CAPTCHA (Google reCAPTCHA v3, `App\Rules\RecaptchaRule`) sur le formulaire
+  de contact général et le formulaire de contact des entreprises. La règle
+  est ignorée tant que `RECAPTCHA_SITE_KEY`/`RECAPTCHA_SECRET_KEY` ne sont
+  pas configurées (le composant `<x-recaptcha>` n'insère alors pas le champ
+  caché), et devient bloquante dès leur configuration, sans changement de
+  code applicatif.
 
 ## 6. Téléchargements sécurisés (bibliothèque)
 - URL de téléchargement signée (`URL::temporarySignedRoute`, validité
