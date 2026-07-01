@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DeviceTokenController;
 use App\Http\Controllers\Site\ArticleController;
 use App\Http\Controllers\Site\ContactController;
 use App\Http\Controllers\Site\EventController;
@@ -47,5 +48,9 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::post('/notifications/device-token', [DeviceTokenController::class, 'store'])
+    ->middleware('auth')
+    ->name('notifications.device-token');
 
 require __DIR__.'/auth.php';

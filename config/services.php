@@ -67,6 +67,7 @@ return [
     'fcm' => [
         'project_id' => env('FCM_PROJECT_ID'),
         'credentials_path' => env('FCM_CREDENTIALS_PATH'),
+        'server_key' => env('FCM_SERVER_KEY'),
     ],
 
     'recaptcha' => [

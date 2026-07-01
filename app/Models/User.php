@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Business\Business;
 use App\Models\Library\LibrarySubscription;
+use App\Models\Notification\DeviceToken;
 use App\Models\Payment\Payment;
 use App\Models\Quiz\QuizCandidate;
 use App\Models\Shop\Order;
@@ -107,8 +108,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(AuditLog::class);
     }
 
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class);
+    }
+
     public function isActive(): bool
     {
         return $this->status === 'active';
+    }
+
+    public function routeNotificationForWhatsapp(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function routeNotificationForSms(): ?string
+    {
+        return $this->phone;
     }
 }

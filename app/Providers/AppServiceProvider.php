@@ -8,6 +8,7 @@ use App\Listeners\LogSuccessfulLogin;
 use App\Listeners\Payment\ActivateLibrarySubscription;
 use App\Listeners\Payment\ActivateQuizCandidate;
 use App\Listeners\Payment\CompleteOrder;
+use App\Listeners\Payment\SendPaymentConfirmationNotification;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
@@ -34,5 +35,6 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(PaymentConfirmed::class, ActivateLibrarySubscription::class);
         Event::listen(PaymentConfirmed::class, ActivateQuizCandidate::class);
         Event::listen(PaymentConfirmed::class, CompleteOrder::class);
+        Event::listen(PaymentConfirmed::class, SendPaymentConfirmationNotification::class);
     }
 }
