@@ -83,40 +83,46 @@ Visiteur / Élève / Enseignant / Partenaire / Admin
 
 ## 4. Arborescence applicative
 
+Structure retenue : modèles Eloquent **groupés par module dans
+`app/Models/<Module>`** (convention PSR-4 standard, sans complexité DDD
+inutile), logique métier dans des **services applicatifs par module**
+(`app/Services/<Module>`), et contrôleurs fins organisés par audience
+(Admin / Api / Site). Ce choix suit strictement les *Laravel Best
+Practices* demandées par le cahier des charges (préférer les conventions du
+framework à une architecture hexagonale non requise), tout en gardant
+chaque module indépendant et facilement testable.
+
 ```
 app/
   Console/Commands/
-  Domain/
-    Auth/                     (2FA, journal de connexions)
-    Library/                  (Bibliothèque numérique)
-      Models/ Services/ Policies/
-    Quiz/                     (MOUNGO TIC QUIZZ)
-      Models/ Services/ Policies/ Support/ (anti-cheat, scoring)
-    Shop/                     (Boutique e-commerce)
-      Models/ Services/ Policies/
-    Business/                 (Entreprises des membres)
-      Models/ Services/ Policies/
-    Content/                  (Actualités, Evénements, Galerie, Pages, FAQ, Témoignages)
-      Models/ Services/
-    Payment/                  (Paiement Monetbil, transactions unifiées)
-      Contracts/ Gateways/ Services/
-    Notification/             (Notifications multicanal)
-      Channels/ Services/
-    AI/                       (Assistant IA + génération QCM)
-      Contracts/ Providers/ Services/
-    Cms/                      (Menus, bannières, carrousels, partenaires, paramètres, SEO)
-      Models/ Services/
+  Models/
+    User.php  TeacherProfile.php  StudentProfile.php  LoginLog.php  AuditLog.php
+    Library/    (LibraryCategory, LibraryPlan, LibrarySubscription, LibraryDocument, LibraryDownload)
+    Quiz/       (QuizSubject, QuizEdition, QuizQuestion, QuizQuestionOption, QuizCandidate, QuizAttempt, QuizAttemptAnswer, QuizCertificate)
+    Shop/       (ProductCategory, Product, Order, OrderItem)
+    Business/   (Business, BusinessService, BusinessMedia, BusinessContactMessage)
+    Content/    (Article, Event, GalleryAlbum, GalleryItem, Page, Faq, Partner, Review, Banner)
+    Cms/        (Menu, MenuItem, Setting)
+    Payment/    (Payment)
+    Notification/ (NotificationLog)
+    Ai/         (AiConversation, AiMessage)
+  Services/
+    Library/  Quiz/  Shop/  Business/
+    Payment/    (PaymentService, Contracts/PaymentGatewayInterface, Gateways/MonetbilGateway)
+    Ai/         (Contracts/AIProviderInterface, Providers/OpenAiProvider, QuizGenerationService, AssistantService)
+    Notification/ (Channels/WhatsAppChannel, Channels/SmsChannel, Channels/FcmChannel)
   Http/
     Controllers/
       Admin/                  (Back-office)
       Api/                    (API REST)
       Site/                   (Frontend public)
     Middleware/
-    Requests/
+    Requests/<Module>/
     Resources/
   Livewire/                   (Composants interactifs : quiz runner, panier, etc.)
-  Models/                     (Modèles transverses : User, Role, AuditLog…)
   Policies/
+  Notifications/              (classes Notification Laravel : PaymentConfirmed, CertificateIssued, ...)
+  Events/ Listeners/
   Providers/
 database/
   migrations/
