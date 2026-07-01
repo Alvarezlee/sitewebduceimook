@@ -1,59 +1,98 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CEIMO — Plateforme officielle
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Application web du **Cercle des Enseignants d'Informatique du Moungo** (CEIMO) :
+formation, bibliothèque numérique payante, concours **MOUNGO TIC QUIZZ**, boutique
+e-commerce, vitrines d'entreprises membres, assistant IA et panneau d'administration
+complet.
 
-## About Laravel
+## Stack technique
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Backend** : Laravel 12 / PHP 8.4
+- **Frontend** : Livewire 3 + Volt, AlpineJS, TailwindCSS (thème glassmorphism bleu/blanc/vert, mode sombre)
+- **Base de données** : MySQL 8 (SQLite pour les tests automatisés)
+- **Paiement** : Monetbil (Mobile Money — Orange Money / MTN MoMo)
+- **Notifications** : Email, WhatsApp, SMS, Push (FCM)
+- **IA** : fournisseur configurable (OpenAI par défaut) pour l'assistant conversationnel et la génération de QCM
+- **RBAC** : spatie/laravel-permission (rôles : super_admin, admin, moderateur, enseignant, eleve, entreprise, partenaire)
+- **Sécurité** : 2FA (TOTP), reCAPTCHA v3, rate limiting, audit log
+- **Tests** : Pest
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Voir [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), [docs/DATABASE.md](docs/DATABASE.md)
+et [docs/SECURITY.md](docs/SECURITY.md) pour la documentation technique détaillée.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
 
-## Learning Laravel
+```bash
+composer install
+cp .env.example .env
+php artisan key:generate
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Configurer `.env` (base de données, Monetbil, IA, notifications — voir la section
+[Variables d'environnement](#variables-denvironnement) ci-dessous), puis :
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+php artisan migrate --seed
+npm install
+npm run build   # ou `npm run dev` en développement
+php artisan storage:link
+php artisan serve
+```
 
-## Laravel Sponsors
+## Comptes de démonstration
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Après `php artisan migrate --seed`, les comptes suivants sont disponibles
+(mot de passe : `password`) :
 
-### Premium Partners
+| Rôle | Email |
+|---|---|
+| Super administrateur | `superadmin@ceimo.cm` |
+| Administrateur | `admin@ceimo.cm` |
+| Entreprise membre | `contact@al-infotech.cm` |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Des enseignants et élèves supplémentaires sont générés aléatoirement par
+`UserSeeder`.
 
-## Contributing
+## Variables d'environnement
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Groupe | Variables clés |
+|---|---|
+| Paiement Monetbil | `MONETBIL_SERVICE_KEY`, `MONETBIL_SERVICE_SECRET`, `MONETBIL_NOTIFY_URL` |
+| Assistant IA / génération QCM | `AI_PROVIDER`, `AI_API_KEY`, `AI_MODEL`, `AI_BASE_URL` |
+| Notifications WhatsApp / SMS | `WHATSAPP_API_URL`, `WHATSAPP_API_TOKEN`, `SMS_GATEWAY_URL`, `SMS_GATEWAY_API_KEY` |
+| Notifications Push (FCM) | `FCM_PROJECT_ID`, `FCM_CREDENTIALS_PATH` |
+| Anti-bot | `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY` |
+| SEO / Analytics | `GOOGLE_ANALYTICS_ID`, `GOOGLE_SITE_VERIFICATION` |
 
-## Code of Conduct
+Chaque intégration est optionnelle en développement : si une clé n'est pas
+renseignée (ex. `RECAPTCHA_SITE_KEY`), la fonctionnalité correspondante est
+désactivée sans bloquer le reste de l'application.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Tests
 
-## Security Vulnerabilities
+```bash
+php artisan test
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+La suite Pest couvre l'authentification, la RBAC, chaque module métier
+(bibliothèque, quiz, boutique, entreprises), le paiement Monetbil (webhook et
+signature), les notifications, la sécurité (reCAPTCHA, rate limiting) et le SEO.
 
-## License
+## Qualité de code
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+./vendor/bin/pint
+```
+
+## Modules principaux
+
+- **Bibliothèque numérique** — abonnements payants, téléchargements sécurisés à quota
+- **MOUNGO TIC QUIZZ** — QCM générés par IA ou créés par les enseignants, chronomètre serveur, anti-triche, classement automatique, certificats PDF
+- **Boutique** — panier, commande, paiement Monetbil, facture PDF
+- **Entreprises membres** — vitrines, services, galerie média
+- **Assistant IA** — widget conversationnel présent sur tout le site
+- **Panneau d'administration** — gestion complète du contenu, des utilisateurs, des paiements et des paramètres du site
+
+## Licence
+
+Propriété du CEIMO. Tous droits réservés.
