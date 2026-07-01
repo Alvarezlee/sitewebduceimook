@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Payment;
 
+use App\Models\Library\LibrarySubscription;
 use App\Models\Payment\Payment;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,6 +17,8 @@ class PaymentFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
+            'payable_type' => LibrarySubscription::class,
+            'payable_id' => LibrarySubscription::factory(),
             'gateway' => 'monetbil',
             'gateway_reference' => Str::uuid()->toString(),
             'amount' => fake()->numberBetween(1000, 10000),
