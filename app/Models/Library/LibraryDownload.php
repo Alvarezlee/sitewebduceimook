@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LibraryDownload extends Model
 {
-    public const UPDATED_AT = null;
+    public $timestamps = false;
 
     protected $fillable = [
         'user_id',

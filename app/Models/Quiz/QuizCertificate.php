@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuizCertificate extends Model
 {
-    public const UPDATED_AT = null;
+    public $timestamps = false;
 
     protected $fillable = [
         'quiz_attempt_id',
