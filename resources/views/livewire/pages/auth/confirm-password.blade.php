@@ -34,14 +34,16 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
+    <h1 class="text-xl font-bold mb-4">Confirmation du mot de passe</h1>
+
     <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+        Ceci est une zone sécurisée de l'application. Veuillez confirmer votre mot de passe avant de continuer.
     </div>
 
     <form wire:submit="confirmPassword">
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" value="Mot de passe" />
 
             <x-text-input wire:model="password"
                           id="password"
@@ -55,7 +57,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         <div class="flex justify-end mt-4">
             <x-primary-button>
-                {{ __('Confirm') }}
+                Confirmer
             </x-primary-button>
         </div>
     </form>

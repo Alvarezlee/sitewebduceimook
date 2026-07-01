@@ -1,8 +1,13 @@
 <?php
 
+use App\Providers\AiServiceProvider;
+use App\Providers\AppServiceProvider;
+use App\Providers\PaymentServiceProvider;
+use App\Providers\VoltServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    App\Providers\VoltServiceProvider::class,
-    App\Providers\PaymentServiceProvider::class,
-    App\Providers\AiServiceProvider::class,
+    AppServiceProvider::class,
+    VoltServiceProvider::class,
+    PaymentServiceProvider::class,
+    AiServiceProvider::class,
 ];

@@ -60,6 +60,8 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
+    <h1 class="text-xl font-bold mb-6">Créer votre compte CEIMO</h1>
+
     <form wire:submit="register">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>

@@ -20,6 +20,36 @@
         </div>
     </section>
 
+    @if ($banners->isNotEmpty())
+        <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-8 relative z-10" x-data="{ active: 0, count: {{ $banners->count() }} }" x-init="setInterval(() => active = (active + 1) % count, 6000)">
+            <div class="glass-card overflow-hidden relative h-56 sm:h-72">
+                @foreach ($banners as $index => $banner)
+                    <a
+                        href="{{ $banner->link_url ?? '#' }}"
+                        x-show="active === {{ $index }}"
+                        x-transition:enter="transition ease-out duration-500"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        class="absolute inset-0 flex items-center justify-center bg-cover bg-center"
+                        style="background-image: url('{{ Illuminate\Support\Facades\Storage::url($banner->image_path) }}')"
+                    >
+                        @if ($banner->title)
+                            <span class="bg-black/40 text-white px-6 py-3 rounded-xl font-bold text-lg">{{ $banner->title }}</span>
+                        @endif
+                    </a>
+                @endforeach
+
+                @if ($banners->count() > 1)
+                    <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                        @foreach ($banners as $index => $banner)
+                            <button @click="active = {{ $index }}" class="h-2 w-2 rounded-full" :class="active === {{ $index }} ? 'bg-white' : 'bg-white/40'"></button>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </section>
+    @endif
+
     @if ($articles->isNotEmpty())
     <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
         <div class="flex items-end justify-between mb-8">
@@ -98,6 +128,20 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+    </section>
+    @endif
+
+    @if ($partners->isNotEmpty())
+    <section class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+        <span class="section-eyebrow">Partenaires</span>
+        <h2 class="section-title mt-1 mb-8">Ils nous soutiennent</h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-6 items-center">
+            @foreach ($partners as $partner)
+                <a href="{{ $partner->website_url ?? '#' }}" target="_blank" class="glass-card p-4 flex items-center justify-center h-20 grayscale hover:grayscale-0 transition">
+                    <img src="{{ Illuminate\Support\Facades\Storage::url($partner->logo_path) }}" alt="{{ $partner->name }}" class="max-h-12 object-contain">
+                </a>
+            @endforeach
         </div>
     </section>
     @endif
