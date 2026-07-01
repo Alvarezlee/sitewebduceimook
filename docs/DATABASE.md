@@ -383,7 +383,24 @@ businesses 1---N business_services / business_media / business_contact_messages
 articles / events / gallery_albums / pages / faqs / partners / reviews / banners : contenus indépendants liés à users (auteur) le cas échéant
 ```
 
-## 12. Conventions d'index & contraintes
+## 12. Notes d'implémentation (migrations)
+
+Précisions apportées lors de la traduction du MCD en migrations Laravel
+(`database/migrations/`) :
+
+- `quiz_editions` porte un `slug` (URL publique de l'édition) et
+  `questions_per_attempt` (nombre de questions tirées aléatoirement par
+  tentative parmi la banque validée du sujet).
+- `quiz_attempts` conserve `question_order` (JSON) : la séquence de
+  questions tirée pour cette tentative précise, nécessaire pour rejouer
+  l'ordre aléatoire côté serveur sans dépendre du client.
+- `quiz_attempt_answers` a une contrainte UNIQUE (`quiz_attempt_id`,
+  `quiz_question_id`) pour empêcher une double réponse à la même question.
+- `users` inclut `first_name`/`last_name` (au lieu d'un `name` unique) pour
+  couvrir les besoins des formulaires (candidats quiz, factures) et un
+  `soft delete` pour permettre la désactivation de compte réversible.
+
+## 13. Conventions d'index & contraintes
 
 - Toutes les FK ont un index et une politique `ON DELETE` explicite
   (`cascade` pour les enfants exclusifs, `restrict`/`set null` sinon).
