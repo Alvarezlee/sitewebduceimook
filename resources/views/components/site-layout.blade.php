@@ -149,5 +149,7 @@
                 &copy; {{ now()->year }} CEIMO — Tous droits réservés.
             </div>
         </footer>
+
+        <livewire:ai.assistant-widget />
     </body>
 </html>
