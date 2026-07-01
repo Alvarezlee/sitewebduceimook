@@ -3,12 +3,15 @@
 namespace App\Models\Quiz;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class QuizQuestion extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'quiz_subject_id',
         'created_by',

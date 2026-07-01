@@ -4,6 +4,7 @@ namespace App\Models\Quiz;
 
 use App\Models\Payment\Payment;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class QuizCandidate extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'quiz_edition_id',

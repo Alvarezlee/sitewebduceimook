@@ -4,6 +4,7 @@ namespace App\Models\Library;
 
 use App\Models\Payment\Payment;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class LibrarySubscription extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'user_id',
         'library_plan_id',
